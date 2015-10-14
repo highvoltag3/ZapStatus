@@ -1,35 +1,59 @@
-<div class="row">
-    
-    <div class="col-md-6">
-        <section class="themeComments1">
-            <div class="media">
-              <div class="media-left">
-                <a href="#" class="userImg">
-                  <img class="media-object" src="http://i.imgur.com/QiRVrQo.jpg" alt="...">
-                </a>
-              </div>
-              <div class="media-body">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <a href="">
-                            <strong>myusername</strong>
-                        </a>
-                        commented
-                        <time>5 days ago</time>
-                    </div>
-                    <div class="panel-body">
-                        <p>Panel content</p>
-                        <p>content</p>
-                        <br>
-                        <a href="" class="btn btn-reply btn-sm"><i class="fa fa-reply"></i>  Reply</a>
-                    </div>
+
+<div class="col-md-6">
+    {{#status}}
+    <section class="checkin">
+        <div class="media">
+          <div class="media-left">
+            <a href="#" class="userImg">
+              <img class="media-object" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="...">
+            </a>
+          </div>
+          <div class="media-body">
+            <div class="panel">
+                <div class="panel-heading">
+                    <a href="">
+                        <strong>{{../user}}</strong>
+                    </a>
+                    {{!-- commented
+                    <time>5 days ago</time> --}}
                 </div>
-              </div>
+
+                <div class="panel-body">
+                    <div class="panel panel-primary">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Today</h3>
+                      </div>
+                      <div class="panel-body">
+                        {{today}}
+                      </div>
+                    </div>
+
+                    <div class="panel panel-info">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Yesterday</h3>
+                      </div>
+                      <div class="panel-body">
+                        {{yesterday}}
+                      </div>
+                    </div>
+
+                    <div class="panel panel-danger">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">blockers</h3>
+                      </div>
+                      <div class="panel-body">
+                        {{blocker}}
+                      </div>
+                    </div>
+                    <!-- <a href="" class="btn btn-reply btn-sm"><i class="fa fa-reply"></i>  Reply</a> -->
+                </div>
             </div>
-        </section>
-    </div>
-    
-    <div class="col-md-6">
-    </div>
-    
+          </div>
+        </div>
+    </section>
+    {{/status}}
 </div>
+
+<div class="col-md-6">
+</div>
+

@@ -79,6 +79,117 @@
 
 
 /* Status */
-#status {
+#status,
+#report {
     display: none;
+}
+
+
+/* Reports */
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic);
+@import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+
+body {
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    background-color: #FFF;
+    padding: 50px 0;
+}
+
+.btn {
+    border-radius: 2px;
+}
+
+
+.checkin .userImg img {
+    width: 80px;
+    height: 80px;
+    border-radius: 2px;
+    margin-right: 30px;
+    padding: 5px;
+    background-color: #F8F8F8;
+    box-shadow: 0 2px 0px #DBDBDB;
+    -webkit-box-shadow: 0 2px 0px #DBDBDB;
+    -moz-box-shadow: 0 2px 0px #DBDBDB;
+}
+
+.checkin .media-body {
+    width: 100%;
+}
+
+.checkin .panel {
+    border-radius: 4px;
+    border-width: 0;
+    box-shadow: none;
+    position: relative;
+}
+
+.checkin .panel>.panel-heading:after,
+.checkin .panel>.panel-heading:before {
+    position: absolute;
+    top: 11px;
+    left: -20px;
+    right: 100%;
+    width: 0;
+    height: 0;
+    display: block;
+    content: "";
+    border-color: transparent;
+    border-style: solid solid outset;
+    pointer-events: none;
+}
+
+.checkin .panel > .panel-heading:after {
+    border-width: 9px;
+    border-right-color: #F3F3F3;
+    margin-top: 1px;
+    margin-left: 2px;
+}
+
+.checkin .panel > .panel-heading:before {
+    border-right-color: #F3F3F3;
+    border-width: 10px;
+}
+
+.checkin .panel-heading {
+    color: #666;
+    border-radius: 4px 4px 0 0;
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.checkin .panel-heading a {
+    color: #333;
+    font-weight: bold;
+}
+
+.checkin .panel-heading a:hover,
+.checkin .panel-heading a:focus,
+.checkin .panel-heading a:active{
+    color: #0c92f2;
+    text-decoration: none;
+}
+
+.checkin .panel-body {
+    color: #666;
+    background-color: #FCFCFC;
+    border-bottom: 2px solid #E6E6E6;
+    border-radius: 0 0 4px 4px;
+}
+
+.checkin time {
+    color: #8C8C8C;
+    font-weight: 300;
+}
+
+.checkin .btn-reply {
+    background-color: #EEE;
+    color: #666;
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,0.15);
+}
+
+.checkin .btn-reply:hover,
+.checkin .btn-reply:focus,
+.checkin .btn-reply:active {
+    color: #333;
 }
