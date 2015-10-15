@@ -53,6 +53,20 @@ $(function () {
     window.location.reload();
   });
 
+  $(".form-signin").on('keyup', function(e){
+    if(e.keyCode == 13) {
+      //console.log(e.keyCode);
+      login();  
+    }
+  });
+
+  $(".form-register").on('keyup', function(e){
+    if(e.keyCode == 13) {
+      //console.log(e.keyCode);
+      register();  
+    }
+  });
+
   var today = (function () {
       var fullDate = new Date();console.log(fullDate);
       var twoDigitMonth = fullDate.getMonth()+"";if(twoDigitMonth.length==1)  twoDigitMonth="0" +twoDigitMonth;
