@@ -30,7 +30,7 @@ var login = function() {
     } else {
       console.log("Authenticated successfully with payload:", authData);
       $('#login').fadeOut();
-      $('#status, #report').fadeIn();
+      $('#nav, #status, #report').fadeIn();
       USERNAME_CONSTANT = username;
       localStorage.setItem("profileImg", authData.password.profileImageURL);
       PROFILE_IMAGE_URL = authData.password.profileImageURL;
@@ -56,13 +56,14 @@ var getUser = function(username) {
      console.log("found user!");
     } else {
       console.log("Can't find user, creating it!");
-      var data = {};
+      var data = snapshot.val();
 
       data[username] = {
         "status" : {
-          "blocker" : "null",
-          "today" : "null",
-          "yesterday": "null"
+          "blocker" : "",
+          "today" : "",
+          "yesterday": "",
+          "date": ""
         }
       };
 
@@ -75,13 +76,14 @@ var getUser = function(username) {
 var getYesterdaysInfo = function(username) {
   zapstatus.child("users/" + username + "/status").once("value", function(snapshot) {
     console.log(snapshot.val());
-    var _data = snapshot.val(),
+
+    //archive yesterdays info
+    if( snapshot.exists() ) {
+      var _data = snapshot.val(),
         _blocker = _data.blocker || "",
         _today = _data.today || "",
         _yesterday = _data.yesterday || "";
 
-    //archive yesterdays info
-    if( snapshot.exists() ) {
       zapstatus.child("archives/" + username).push({
         "status" : {
           "blocker" : _blocker,
@@ -94,6 +96,30 @@ var getYesterdaysInfo = function(username) {
       $("#yesterday-reminder").text(_data.yesterday);
       return _data.yesterday;
     }
+  });
+};
+
+var genPageAlert = function(msg, type) {
+  var dep = "";
+  if (type == "success") {
+    dep = "text!../templates/alerts/success.handlebars";
+  }
+
+  require([dep], function(alertTpl) {
+
+    var doAlert =  (function() {
+      var deferred = $.Deferred();
+      var source  = alertTpl,
+      template    = Handlebars.compile(source),
+      placeholder = $('.main');
+
+      
+      deferred.resolve( placeholder.prepend(template({msg: msg})).hide().fadeIn('slow') );
+
+      setTimeout(function(){ $(".alert").fadeOut("slow"); }, 2000);
+      return deferred.promise();
+
+    })();
   });
 };
 
@@ -119,7 +145,7 @@ var saveStatus = function (username) {
       "yesterday" : yesterday,
       "date": currentDate
     }
-  });
+  }, genPageAlert("We got your new status!", "success"));
 };
 
 var register = function (username) {
@@ -176,27 +202,15 @@ var report = function() {
       console.log(snapshot.val());
 
       var data = snapshot.val();
-
-      var today = (function () {
-        var fullDate = new Date();console.log(fullDate);
-        var twoDigitMonth = fullDate.getMonth()+"";if(twoDigitMonth.length==1)  twoDigitMonth="0" +twoDigitMonth;
-        var twoDigitDate = fullDate.getDate()+"";if(twoDigitDate.length==1) twoDigitDate="0" +twoDigitDate;
-        var currentDate = twoDigitDate + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
-
-        return currentDate;
-        //$('.today').text(currentDate);
-      })();
-
       
       $("#report-content").empty();
 
       _.each( data.users, function( val, key ) {
-        console.log(val.status.date == today, "IF IS");
         val.user = key;
         val.profileImageURL = localStorage.getItem("profileImg") || PROFILE_IMAGE_URL;
         if( val.status.date == today ) {
           createStatus("report-content", val).done(function(){
-            $('.today').text(today);
+            //nothing yet!
           });
         }
       });
@@ -251,5 +265,22 @@ $(function () {
     // Unauthenticate the client
     zapstatus.unauth();
     window.location.reload();
+  });
+
+  var today = (function () {
+      var fullDate = new Date();console.log(fullDate);
+      var twoDigitMonth = fullDate.getMonth()+"";if(twoDigitMonth.length==1)  twoDigitMonth="0" +twoDigitMonth;
+      var twoDigitDate = fullDate.getDate()+"";if(twoDigitDate.length==1) twoDigitDate="0" +twoDigitDate;
+      var currentDate = twoDigitDate + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
+
+      return currentDate;
+      //$('.today').text(currentDate);
+    })();
+
+  $('.today').text(today);
+
+  $(".navbar-nav li").on('click', function(e) {
+    $(this).siblings().removeClass("active");
+    $(this).addClass("active");
   });
 });
