@@ -12,7 +12,8 @@ require.config({
 
 var zapstatus = new Firebase("https://zapstatus.firebaseio.com");
 
-var USERNAME_CONSTANT = "";
+var USERNAME_CONSTANT = "",
+    PROFILE_IMAGE_URL = localStorage.getItem("profileImg") || "";
 
 var login = function() {
   var email = $('#username').val(),
@@ -31,11 +32,21 @@ var login = function() {
       $('#login').fadeOut();
       $('#status, #report').fadeIn();
       USERNAME_CONSTANT = username;
+      localStorage.setItem("profileImg", authData.password.profileImageURL);
+      PROFILE_IMAGE_URL = authData.password.profileImageURL;
       getUser(username);
       getYesterdaysInfo(username);
       report();
+
+      if(PROFILE_IMAGE_URL !== "") {
+        $(".profile-img").attr("src", PROFILE_IMAGE_URL);
+      }
     }
   });
+
+};
+
+var setGravatar = function(profileImageURL) {
 
 };
 
@@ -111,21 +122,37 @@ var saveStatus = function (username) {
   });
 };
 
-// var register = function (username) {
-//   var usersRef = zapstatus.child("users/" + username);
-//   var name = $('#firstname').val(),
-//       email = $('#email').val(),
-//       lastname = $('#lastname').val(),
-//       password = $('#password').val();
+var register = function (username) {
 
-//   usersRef.set({
-//     "info" : {
-//       "name" : name,
-//       "lastname" : lastname,
-//       "email": email
-//     }
-//   });
-// };
+  var _email = $('#username').val(),
+      _password = $('#password').val();
+  
+  zapstatus.createUser({
+    email: _email,
+    password: _password
+  }, function(error, userData) {
+    if (error) {
+      switch (error.code) {
+        case "EMAIL_TAKEN":
+          alert("The new user account cannot be created because the email is already in use.");
+          break;
+        case "INVALID_EMAIL":
+          alert("The specified email is not a valid email.");
+          break;
+        default:
+          alert("Error creating user:", error);
+      }
+    } else {
+      console.log("Successfully created user account with uid:", userData.uid);
+      var _msg = '<div class="alert alert-success" role="alert">';
+          _msg += '<strong>Awesome!</strong> Your account was created re-directing you to the login screen in 3 secs. <a href="index.html">Don\'t wanna wait? Click here</a>';
+          _msg += '</div>';
+
+      $("#register").prepend(_msg);
+      setTimeout(function(){ window.location = "index.html"; }, 3000);
+    }
+  });
+};
 
 
 var report = function() {
@@ -166,35 +193,38 @@ var report = function() {
       _.each( data.users, function( val, key ) {
         console.log(val.status.date == today, "IF IS");
         val.user = key;
+        val.profileImageURL = localStorage.getItem("profileImg") || PROFILE_IMAGE_URL;
         if( val.status.date == today ) {
           createStatus("report-content", val).done(function(){
             $('.today').text(today);
           });
         }
       });
-
-      
       
     });
-
-          
 
   });
 };
 
 
-
-//Scripts
-$("#login-btn").on('click', function(e) {
-  login();
-});
-
-$("#btnSubmit").on('click', function(e) {
-  saveStatus(USERNAME_CONSTANT);
-});
-
-//check if I'm logged in if I am let me in!
 $(function () {
+
+  //Scripts
+  $("#login-btn").on('click', function(e) {
+    login();
+  });
+
+  $("#btnSubmit").on('click', function(e) {
+    saveStatus(USERNAME_CONSTANT);
+  });
+
+  $("#register-btn").on('click', function(e) {
+    // Unauthenticate the client
+    console.log("click");
+    register();
+  });
+
+  //check if I'm logged in if I am let me in!
   var isAuth = zapstatus.getAuth();
   
   if(isAuth) {
@@ -205,9 +235,16 @@ $(function () {
     $('#login').fadeOut();
     $('#status, #report').fadeIn();
     USERNAME_CONSTANT = _username;
+    localStorage.setItem("profileImg", isAuth.password.profileImageURL);
+    PROFILE_IMAGE_URL = isAuth.password.profileImageURL;
     getUser(_username);
     getYesterdaysInfo(_username);
     report();
+
+    //load profile image
+    if(PROFILE_IMAGE_URL !== "" || localStorage.getItem("profileImg").length) {
+      $(".profile-img").attr("src", localStorage.getItem("profileImg")) ;
+    }
   }
 
   $("#logout-btn").on('click', function(e) {
