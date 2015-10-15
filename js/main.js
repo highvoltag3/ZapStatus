@@ -159,6 +159,63 @@ var saveStatus = function (username) {
       "date": currentDate
     }
   }, genPageAlert("We got your new status!", "success"));
+
+  reportBlocker(blockers);
+};
+
+var numOfBlockers = 0,
+    currentBlockerData = [];
+
+var reportBlocker = function(blockerText) {
+  var lametriczap = new Firebase("https://lametriczap.firebaseio.com/");
+  var blockers = lametriczap.child("lametriczap/frames");
+  var _today = (function () {
+        var fullDate = new Date();console.log(fullDate);
+        var twoDigitMonth = fullDate.getMonth()+"";if(twoDigitMonth.length==1)  twoDigitMonth="0" +twoDigitMonth;
+        var twoDigitDate = fullDate.getDate()+"";if(twoDigitDate.length==1) twoDigitDate="0" +twoDigitDate;
+        var currentDate = twoDigitDate + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
+
+        return currentDate;
+      })();
+
+  //Read data
+  blockers.on("value", function(snapshot) { //"lametriczap" === 'blockers'
+    console.log(snapshot);
+    var _data = snapshot.val();
+    console.log(snapshot.numChildren());
+    currentBlockerData = _data;
+    numOfBlockers = snapshot.numChildren();
+  });
+
+
+  //write data
+  var options = {
+    index: 0, //always show as soon as we send it
+    text: blockerText
+  };
+
+  if(!$.isArray(currentBlockerData)) {
+    blockers.remove();
+    blockers.set({
+      "lametriczap" : {
+        "frames" : [ {
+          "icon" : ""
+        } ]
+      }
+    });
+    //alert("Please try again, I promise I will work next time!");
+  }
+
+  currentBlockerData.unshift(
+    {
+      "index" : options.index,
+      "text" : options.text,
+      "icon" : "i184", //Stop sign
+      "date" : _today
+    }
+  );
+
+  blockers.set( currentBlockerData );
 };
 
 var register = function (username) {
