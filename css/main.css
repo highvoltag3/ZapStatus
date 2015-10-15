@@ -80,6 +80,7 @@
 
 /* Status */
 #status,
+#nav,
 #report {
     display: none;
 }
