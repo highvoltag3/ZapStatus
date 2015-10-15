@@ -47,6 +47,18 @@ var login = function() {
 
 };
 
+var genDefaultAvatar = function(username) {
+  var _bgcolor = Math.floor(Math.random()*16777215).toString(16),
+      _profileImg = "http://placehold.it/120/" + _bgcolor + "/ffffff?text=" + username.substr(0,2).toUpperCase();
+
+      if (_bgcolor !== "ffffff" && _bgcolor.length == 6 ) {
+        return _profileImg;
+      } else {
+        //there was an error run myself again
+        return genDefaultAvatar(username);
+      }
+};
+
 var setGravatar = function(profileImageURL) {
 
 };
@@ -216,7 +228,8 @@ var report = function() {
 
       _.each( data.users, function( val, key ) {
         val.user = key;
-        val.profileImageURL = localStorage.getItem("profileImg") || PROFILE_IMAGE_URL;
+        //val.profileImageURL = localStorage.getItem("profileImg") || PROFILE_IMAGE_URL;
+        val.profileImageURL = genDefaultAvatar(key);
         if( val.status.date == today ) {
           createStatus("report-content", val).done(function(){
             //nothing yet!

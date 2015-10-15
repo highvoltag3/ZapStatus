@@ -2,28 +2,6 @@ $(function () {
 
   //Scripts
 
-  //fix .val from stripping line breaks from textarea
-  $.valHooks.textarea = {
-    get: function( elem ) {
-      return elem.value.replace( /\r?\n/g, "<br />" );
-    }
-  };
-
-  //assign events
-  $("#login-btn").on('click', function(e) {
-    login();
-  });
-
-  $("#btnSubmit").on('click', function(e) {
-    saveStatus(USERNAME_CONSTANT);
-  });
-
-  $("#register-btn").on('click', function(e) {
-    // Unauthenticate the client
-    console.log("click");
-    register();
-  });
-
   //check if I'm logged in if I am let me in!
   var isAuth = zapstatus.getAuth();
   
@@ -46,6 +24,28 @@ $(function () {
       $(".profile-img").attr("src", localStorage.getItem("profileImg")) ;
     }
   }
+
+  //fix .val from stripping line breaks from textarea
+  $.valHooks.textarea = {
+    get: function( elem ) {
+      return elem.value.replace( /\r?\n/g, "<br />" );
+    }
+  };
+
+  //assign events
+  $("#login-btn").on('click', function(e) {
+    login();
+  });
+
+  $("#btnSubmit").on('click', function(e) {
+    saveStatus(USERNAME_CONSTANT);
+  });
+
+  $("#register-btn").on('click', function(e) {
+    // Unauthenticate the client
+    console.log("click");
+    register();
+  });
 
   $("#logout-btn").on('click', function(e) {
     // Unauthenticate the client
