@@ -36,15 +36,17 @@
                         {{yesterday}}
                       </div>
                     </div>
-
+                    
+                    {{#unless blocker.length}}
                     <div class="panel panel-danger">
                       <div class="panel-heading">
-                        <h3 class="panel-title">blockers</h3>
+                        <h3 class="panel-title">Blockers</h3>
                       </div>
                       <div class="panel-body">
                         {{blocker}}
                       </div>
                     </div>
+                    {{/unless}}
                     <!-- <a href="" class="btn btn-reply btn-sm"><i class="fa fa-reply"></i>  Reply</a> -->
                 </div>
             </div>
