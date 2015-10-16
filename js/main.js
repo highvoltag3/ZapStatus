@@ -206,6 +206,11 @@ var reportBlocker = function(blockerText) {
     //alert("Please try again, I promise I will work next time!");
   }
 
+  //if no text don't quit this function
+  if(blockerText.length < 3) {
+    return false;
+  }
+
   currentBlockerData.unshift(
     {
       "index" : options.index,
