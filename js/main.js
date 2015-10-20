@@ -160,13 +160,13 @@ var saveStatus = function (username) {
     }
   }, genPageAlert("We got your new status!", "success"));
 
-  reportBlocker(blockers);
+  reportBlocker(blockers, username);
 };
 
 var numOfBlockers = 0,
     currentBlockerData = [];
 
-var reportBlocker = function(blockerText) {
+var reportBlocker = function(blockerText, username) {
   var lametriczap = new Firebase("https://lametriczap.firebaseio.com/");
   var blockers = lametriczap.child("lametriczap/frames");
   var _today = (function () {
@@ -191,7 +191,7 @@ var reportBlocker = function(blockerText) {
   //write data
   var options = {
     index: 0, //always show as soon as we send it
-    text: blockerText
+    text: blockerText + " -- reported by: "+ username
   };
 
   if(!$.isArray(currentBlockerData)) {
