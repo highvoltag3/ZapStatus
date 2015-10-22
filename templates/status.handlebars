@@ -37,7 +37,7 @@
                       </div>
                     </div>
                     
-                    {{#unless blocker.length}}
+                    {{#if blocker.length}}
                     <div class="panel panel-danger">
                       <div class="panel-heading">
                         <h3 class="panel-title">Blockers</h3>
@@ -46,7 +46,7 @@
                         {{blocker}}
                       </div>
                     </div>
-                    {{/unless}}
+                    {{/if}}
                     <!-- <a href="" class="btn btn-reply btn-sm"><i class="fa fa-reply"></i>  Reply</a> -->
                 </div>
             </div>
