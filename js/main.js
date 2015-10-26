@@ -218,8 +218,8 @@ var reportBlocker = function(blockerText, username) {
     //alert("Please try again, I promise I will work next time!");
   }
 
-  //if no text don't quit this function
-  if(blockerText.length < 3) {
+  //if text is too short quit this function (Ex. None)
+  if(blockerText.length < 5) {
     return false;
   }
 
