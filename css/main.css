@@ -119,6 +119,26 @@ body {
   white-space: pre-line;
 }
 
+/*Filters*/
+#filters {
+  padding-bottom: 3em;
+}
+
+.nav-pills>li.active>a {
+  border-bottom: 1px solid #337ab7;
+  background: none;
+  color: #23527c;
+  border-radius: 0;
+}
+
+.nav-pills>li>a:hover,
+.nav-pills>li.active>a:hover {
+  border-bottom: 1px solid #eee;
+  background: none; 
+  color: #23527c;
+  border-radius: 0;
+}
+
 /*
 .checkin .userImg img {
     width: 80px;
@@ -213,28 +233,28 @@ body {
     color: #333;
     }*/
 
-    /* fanciness */
-    hr {
-      padding: 2em 0em;
-    }
+/* fanciness */
+hr {
+  padding: 2em 0em;
+}
 
-    :target {
-      animation: highlight 1s ease;  
-      transform: translateX(20px);     
-    }
-    @keyframes highlight {
-      0% { border-left-color: red; }
-      100% { border-left-color: white; }
-    }
+:target {
+  animation: highlight 1s ease;  
+  transform: translateX(20px);     
+}
+@keyframes highlight {
+  0% { border-left-color: red; }
+  100% { border-left-color: white; }
+}
 
-    .row {
-      border-left: 40px solid white;
-      padding: 10px;
-      transition: all 0.5s ease;     
-      padding-right: 50px;
-      margin-left: -20px;    
-    }
+.row {
+  border-left: 40px solid white;
+  padding: 10px;
+  transition: all 0.5s ease;     
+  padding-right: 50px;
+  margin-left: -20px;    
+}
 
-    .alert {
-      margin-top: 0; 
-    }
+.alert {
+  margin-top: 0; 
+}

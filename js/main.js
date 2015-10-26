@@ -64,25 +64,31 @@ var setGravatar = function(profileImageURL) {
 };
 
 var getUser = function(username) {
-  zapstatus.child("users").once("value", function(snapshot) {
-    if( snapshot.child(username).exists() ) {
-     console.log("found user!");
-    } else {
-      console.log("Can't find user, creating it!");
-      var data = snapshot.val();
+    zapstatus.child("users").once("value", function(snapshot) {
+      if( snapshot.child(username).exists() ) {
+       console.log("found user!");
+      } else {
+        console.log("Can't find user, creating it!");
+        var data = snapshot.val();
 
-      data[username] = {
-        "status" : {
-          "blocker" : "",
-          "today" : "",
-          "yesterday": "",
-          "date": ""
-        }
-      };
+        data[username] = {
+          "info": {
+            "name": "John",
+            "lastname": "Appleseed",
+            "phone": "",
+            "team": ""
+          },
+          "status" : {
+            "blocker" : "",
+            "today" : "",
+            "yesterday": "",
+            "date": ""
+          }
+        };
 
-      zapstatus.child("users").set(data);
-    }
-  });
+        zapstatus.child("users").set(data);
+      }
+    });
   
 };
 
@@ -138,6 +144,11 @@ var genPageAlert = function(msg, type) {
 
 var saveStatus = function (username) {
   var usersRef = zapstatus.child("users/" + username);
+  var userInfo = {};
+  var userInfoRef = zapstatus.child("users/" + username + "/info").once("value", function(snapshot) {
+    userInfo = snapshot.val();
+  });
+
   var yesterday = $('#yesterday').val(),
       today = $('#today').val(),
       blockers = $('#blockers').val();
@@ -152,6 +163,7 @@ var saveStatus = function (username) {
       })();
 
   usersRef.set({
+    "info": userInfo,
     "status" : {
       "blocker" : blockers,
       "today" : today,
@@ -226,7 +238,12 @@ var reportBlocker = function(blockerText, username) {
 var register = function (username) {
 
   var _email = $('#username').val(),
-      _password = $('#password').val();
+      _password = $('#password').val(),
+      _firstName = $('#name').val(),
+      _lastName = $('#lastname').val(),
+      _phone = $('#phone').val(),
+      _team = $('#team').val(),
+      username = _email.substring(0, _email.indexOf('@'));
   
   zapstatus.createUser({
     email: _email,
@@ -250,7 +267,37 @@ var register = function (username) {
           _msg += '</div>';
 
       $("#register").prepend(_msg);
-      setTimeout(function(){ window.location = "index.html"; }, 3000);
+      setTimeout(function(){ 
+        zapstatus.child("users").once("value", function(snapshot) {
+          if( snapshot.child(username).exists() ) {
+           console.log("found user!");
+          } else {
+            console.log("Can't find user, creating it!");
+            var data = snapshot.val();
+
+            data[username] = {
+              "info": {
+                "name": _firstName,
+                "lastname": _lastName,
+                "phone": _phone,
+                "team": _team
+              },
+              "status" : {
+                "blocker" : "",
+                "today" : "",
+                "yesterday": "",
+                "date": ""
+              }
+            };
+
+            zapstatus.child("users").set(data);
+          }
+        });
+
+        window.location = "index.html";
+        //login();
+
+      }, 3000);
     }
   });
 };
@@ -285,8 +332,21 @@ var report = function() {
         return currentDate;
       })();
       var data = snapshot.val();
-      
-      $("#report-content").empty();
+      var $reportContent = $("#report-content");
+      //this is dupe in scripts we should clean it later to have only one
+      var $filterType = $(".nav-pills .active").data("type");
+      var newStatusHandler = function() {
+        $(".statusbox").each(function( i ) {
+          if ( $(this).attr("data-team") === $filterType ) {
+            $(this).show().addClass("filter-true");
+          } else {
+            $(this).hide();
+          }
+        });
+      };
+      //end dupe
+
+      $reportContent.empty();
 
       _.each( data.users, function( val, key ) {
         val.user = key;
@@ -294,7 +354,9 @@ var report = function() {
         val.profileImageURL = genDefaultAvatar(key);
         if( val.status.date == today ) {
           createStatus("report-content", val).done(function(){
-            //nothing yet!
+            console.log("New Status has been created");
+            
+            newStatusHandler();
           });
         }
       });

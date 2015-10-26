@@ -56,14 +56,14 @@ $(function () {
   $(".form-signin").on('keyup', function(e){
     if(e.keyCode == 13) {
       //console.log(e.keyCode);
-      login();  
+      login();
     }
   });
 
   $(".form-register").on('keyup', function(e){
     if(e.keyCode == 13) {
       //console.log(e.keyCode);
-      register();  
+      register();
     }
   });
 
@@ -83,4 +83,33 @@ $(function () {
     $(this).siblings().removeClass("active");
     $(this).addClass("active");
   });
+
+  //filters
+  var $filterType = $(".nav-pills .active").data("type");
+  var newStatusHandler = function() {
+    $(".statusbox").each(function( i ) {
+      //filter by type (depending on what you click)
+      if ( $(this).attr("data-team") === $filterType ) {
+        $(this).fadeIn();
+      } else {
+        $(this).hide();
+      }
+      //if others hide anything else ("others" --> '' in firebase)
+      if ( $(this).attr("data-team") === "others" ) {
+        $(".statusbox").not("[data-team='']").hide();
+        $(".statusbox[data-team='']").fadeIn();
+      }
+
+    });
+  };
+
+  $(".nav-pills li a").on("click", function(e){
+    e.preventDefault();
+    $(this).parent().siblings().removeClass("active");
+    $(this).parent().addClass("active");
+    $filterType = $(".nav-pills .active").data("type");
+
+    newStatusHandler();
+  });
+
 });

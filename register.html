@@ -29,8 +29,21 @@
                 <img class="profile-img" src="http://placehold.it/120?text=Zap" alt="">
                 <p class="col-sm-6 col-md-12">Please supply the following details:</p>
                 <div class="form-register">
-                  <input id="username" type="email" class="form-control" placeholder="Email" required autofocus>
-                  <input id="password" type="password" class="form-control" placeholder="Password" required>
+                  <input id="username" type="email" class="form-control" placeholder="Email*" required autofocus>
+                  <input id="password" type="password" class="form-control" placeholder="Password*" required>
+                  <div class="form-group">
+                    <input id="name" type="text" class="form-control" placeholder="First Name*" required><br>
+                    <input id="lastname" type="text" class="form-control" placeholder="Last Name*" required><br>
+                    <input id="phone" type="number" class="form-control" placeholder="Phone Number (optional)">
+                  </div>
+                  <div class="form-group">
+                    <select name="team" id="team" class="form-control">
+                      <option value="" disabled="disabled" selected="selected">Choose a team*</option>
+                      <option value="frontend">Front-End</option>
+                      <option value="backend">Back-end</option>
+                      <option value="">Other / Not Business Prod team</option>
+                    </select>
+                  </div>
                   <button id="register-btn" type="submit" class="btn btn-lg btn-primary btn-block">Create Account</button>
                   <label class="checkbox pull-left col-md-offset-1">
                     <!-- <input type="checkbox" value="remember-me" checked="checked" disabled>

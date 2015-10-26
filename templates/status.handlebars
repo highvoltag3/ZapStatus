@@ -1,5 +1,5 @@
 
-<div class="col-md-6 clearfix">
+<div class="col-md-6 clearfix statusbox" data-team="{{info/team}}">
     {{#status}}
     <section class="">
         <div class="media">
@@ -12,7 +12,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <a href="">
-                        <strong>{{../user}}</strong>
+                        <strong>{{../info/name}}&nbsp;{{../info/lastname}}</strong>
                     </a>
                     {{!-- commented
                     <time>5 days ago</time> --}}
