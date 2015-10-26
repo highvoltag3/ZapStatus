@@ -87,6 +87,7 @@ $(function () {
   //filters
   var $filterType = $(".nav-pills .active").data("type");
   var newStatusHandler = function() {
+    
     $(".statusbox").each(function( i ) {
       //filter by type (depending on what you click)
       if ( $(this).attr("data-team") === $filterType ) {
@@ -98,6 +99,11 @@ $(function () {
       if ( $(this).attr("data-team") === "others" ) {
         $(".statusbox").not("[data-team='']").hide();
         $(".statusbox[data-team='']").fadeIn();
+      }
+
+      //if All show all
+      if ( $filterType === "all" ) {
+        $(".statusbox").fadeIn();
       }
 
     });
