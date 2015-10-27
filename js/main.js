@@ -82,7 +82,8 @@ var getUser = function(username) {
             "blocker" : "",
             "today" : "",
             "yesterday": "",
-            "date": ""
+            "date": "",
+            "postedTime": ""
           }
         };
 
@@ -154,7 +155,7 @@ var saveStatus = function (username) {
       blockers = $('#blockers').val();
 
   var currentDate = (function () {
-        var fullDate = new Date();console.log(fullDate);
+        var fullDate = new Date();
         var twoDigitMonth = fullDate.getMonth()+"";if(twoDigitMonth.length==1)  twoDigitMonth="0" +twoDigitMonth;
         var twoDigitDate = fullDate.getDate()+"";if(twoDigitDate.length==1) twoDigitDate="0" +twoDigitDate;
         var currentDate = twoDigitDate + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
@@ -162,13 +163,16 @@ var saveStatus = function (username) {
         return currentDate;
       })();
 
+  var unixDate = $.now()/1000;
+
   usersRef.set({
     "info": userInfo,
     "status" : {
       "blocker" : blockers,
       "today" : today,
       "yesterday" : yesterday,
-      "date": currentDate
+      "date": currentDate,
+      "postedTime": unixDate
     }
   }, genPageAlert("We got your new status!", "success"));
 
@@ -286,7 +290,8 @@ var register = function (username) {
                 "blocker" : "",
                 "today" : "",
                 "yesterday": "",
-                "date": ""
+                "date": "",
+                "postedTime": ""
               }
             };
 
@@ -365,7 +370,7 @@ var report = function() {
         val.profileImageURL = genDefaultAvatar(key);
         if( val.status.date == today ) {
           createStatus("report-content", val).done(function(){
-            console.log("New Status has been created");
+            //console.log("New Status has been created");
             
             newStatusHandler();
           });
@@ -379,7 +384,8 @@ var report = function() {
 
 //load scripts file
 define(function (require) {
-    var foo = require('scripts');
+    var scripts = require('scripts');
+    var timeago = require('timeAgo');
 });
 
 
