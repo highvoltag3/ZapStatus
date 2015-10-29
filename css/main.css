@@ -119,6 +119,10 @@ body {
   white-space: pre-line;
 }
 
+.postedon {
+  color: #888;
+}
+
 /*Filters*/
 #filters {
   padding-bottom: 3em;
