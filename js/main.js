@@ -181,6 +181,7 @@ var updateUser = function() {
       name = $('#firstname', "#user-details").val(),
       lastname = $('#lastname').val(),
       email = $('#emailaddress').val(),
+      team = $('#team-hidden').val(),
       phone = $('#phonenumber').val();
 
   var userInfo = {};
@@ -188,6 +189,7 @@ var updateUser = function() {
   userInfo.lastname = lastname;
   userInfo.phone = phone;
   userInfo.email = email;
+  userInfo.team = team;
 
   var currentDate = (function () {
         var fullDate = new Date();
