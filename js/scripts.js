@@ -118,4 +118,19 @@ $(function () {
     newStatusHandler();
   });
 
+  //user details
+  $(window).on('hashchange',function(){ 
+    if(window.location.hash === "#user") {
+      $("#status, #report, hr").fadeOut();
+      $("#users-content").show();
+    } else {
+      $("#users-content").fadeOut();
+      $("#status, #report, hr").fadeIn();
+    }
+  });
+  $(window).on('load', function(){
+    window.location.hash = "";
+  });
+
+
 });

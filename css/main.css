@@ -262,3 +262,7 @@ hr {
 .alert {
   margin-top: 0; 
 }
+
+.white-text {
+  color: #fff;
+}

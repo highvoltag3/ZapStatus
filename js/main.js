@@ -67,6 +67,12 @@ var getUser = function(username) {
     zapstatus.child("users").once("value", function(snapshot) {
       if( snapshot.child(username).exists() ) {
        console.log("found user!");
+       userDetailsPage(username).done(function(){
+        $("#update-details").on('click', function(){
+          console.log("update");
+          updateUser();
+        });
+       });
       } else {
         console.log("Can't find user, creating it!");
         var data = snapshot.val();
@@ -89,8 +95,7 @@ var getUser = function(username) {
 
         zapstatus.child("users").set(data);
       }
-    });
-  
+  });
 };
 
 var getYesterdaysInfo = function(username) {
@@ -141,6 +146,71 @@ var genPageAlert = function(msg, type) {
 
     })();
   });
+};
+
+var userDetailsPage = function(username) {
+  var dep = "text!../templates/user-details.handlebars";
+  var userInfo = "";
+  var userInfoRef = zapstatus.child("users/" + username + "/info").once("value", function(snapshot) {
+    userInfo = snapshot.val();
+    console.log("userInfo", userInfo);
+  });
+  var deferred = $.Deferred();
+
+  require([dep], function(userdetailsTpl) {
+
+      var source  = userdetailsTpl,
+      template    = Handlebars.compile(source),
+      placeholder = $('#users-content');
+      
+      deferred.resolve( placeholder.prepend( template( $.extend(userInfo, {'username': username}) ) ).hide() );
+  });
+
+  return deferred.promise();
+};
+
+var updateUser = function() {
+  console.log("updateUser running");
+
+  var username = $("#username-hidden").val();
+  var usersRef = zapstatus.child("users/" + username);
+
+  var yesterday = $('#yesterday').val(),
+      today = $('#today').val(),
+      blockers = $('#blockers').val(),
+      name = $('#firstname', "#user-details").val(),
+      lastname = $('#lastname').val(),
+      email = $('#emailaddress').val(),
+      phone = $('#phonenumber').val();
+
+  var userInfo = {};
+  userInfo.name = name;
+  userInfo.lastname = lastname;
+  userInfo.phone = phone;
+  userInfo.email = email;
+
+  var currentDate = (function () {
+        var fullDate = new Date();
+        var twoDigitMonth = fullDate.getMonth()+"";if(twoDigitMonth.length==1)  twoDigitMonth="0" +twoDigitMonth;
+        var twoDigitDate = fullDate.getDate()+"";if(twoDigitDate.length==1) twoDigitDate="0" +twoDigitDate;
+        var currentDate = twoDigitDate + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
+
+        return currentDate;
+      })();
+
+  var unixDate = $.now()/1000;
+
+  usersRef.set({
+    "info": userInfo,
+    "status" : {
+      "blocker" : blockers,
+      "today" : today,
+      "yesterday" : yesterday,
+      "date": currentDate,
+      "postedTime": unixDate
+    }
+  }, genPageAlert("User details updated!", "success"));
+
 };
 
 var saveStatus = function (username) {
