@@ -1,5 +1,5 @@
 # ZapStatus
-Agile Status update for teams
+Agile Status update for teams (Virtual stand-ups)
 
 This is basically a really quick "SPA" made in about 16hrs of on and off work while attending a conference, it allows teams to update their daily status without the need of a daily sync up.
 
