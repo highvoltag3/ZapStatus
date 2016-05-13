@@ -163,7 +163,10 @@ var userDetailsPage = function(username) {
       template    = Handlebars.compile(source),
       placeholder = $('#users-content');
       
-      deferred.resolve( placeholder.prepend( template( $.extend(userInfo, {'username': username}) ) ).hide() );
+      placeholder.prepend( template( $.extend(userInfo, {'username': username}) ) );
+      placeholder.hide();
+      //we're done resolve this promise
+      deferred.resolve();
   });
 
   return deferred.promise();
